@@ -1,7 +1,6 @@
 ### Modifications from Original
 
 * Removed Foundation
-* Removed LESS
 * Updated to current Angular release (1.3.15 for now)
 * Removed Modernizr from bower.json since it's not an official bower module
 * Added Modernizer cdnjs URL to index.html
