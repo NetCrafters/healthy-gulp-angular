@@ -25,7 +25,9 @@ var paths = {
 var pipes = {};
 
 pipes.orderedVendorScripts = function() {
-    return plugins.order(['jquery.js', 'angular.js']);
+    return plugins.order([
+      'angular.js'
+    ]);
 };
 
 pipes.orderedAppScripts = function() {

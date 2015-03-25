@@ -1,15 +1,17 @@
 angular.module('healthyGulpAngularApp', ['ui.router'])
 
-.config(['$stateProvider', '$urlRouterProvider',
-    function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
 
-        $urlRouterProvider.otherwise('/');
+    $urlRouterProvider.otherwise('/');
 
-        $stateProvider
+    $stateProvider
+      .state('home', {
+        url: '/home',
+        templateUrl: 'components/home.html'
+      });
 
-            .state('home', {
-                url: '/',
-                templateUrl: 'components/home.html'
-            });
+    $locationProvider
+      .html5Mode(true)
+      .hashPrefix('!');
 
-    }]);
+  });
