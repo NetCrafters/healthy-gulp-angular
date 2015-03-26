@@ -144,7 +144,10 @@ pipes.processedAssetsDev = function() {
 };
 
 pipes.processedAssetsProd = function() {
-  return gulp.src(paths.assets)
+  return gulp.src(paths.assets, {base: paths.modulesBase})
+    .pipe(plugins.rename(function(path) {
+      path.dirname = path.dirname.replace(/\/assets/,'');
+    }))
     .pipe(gulp.dest(paths.distProd + '/assets/'));
 };
 
