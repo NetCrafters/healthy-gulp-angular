@@ -144,8 +144,11 @@ pipes.processedAssetsDev = function() {
 };
 
 pipes.processedAssetsProd = function() {
-  return gulp.src(paths.assets)
-    .pipe(gulp.dest(paths.distProd + '/assets/'));
+  return gulp.src(paths.assets, {base: paths.modulesBase})
+    .pipe(plugins.rename(function(path) {
+      path.dirname = path.dirname.replace(/\/assets/,'');
+    }))
+    .pipe(gulp.dest(paths.distProd + '/assets/'));    
 };
 
 
@@ -305,6 +308,13 @@ gulp.task('watch-dev', ['clean-build-app-dev', 'validate-devserver-scripts'], fu
     gulp.watch(paths.styles, function() {
         return pipes.builtStylesDev()
             .pipe(plugins.livereload());
+    });
+
+    // watch assets 
+    gulp.watch(paths.assets, function() {
+      console.log("Assets changed!");
+        return pipes.processedAssetsDev()
+          .pipe(plugins.livereload());
     });
 
 });
