@@ -14,9 +14,11 @@ var paths = {
     modulesBase: './app/modules',
     assets: ['./app/**/assets/**/*'],
     scripts: ['./app/**/*.js','!app/**/*.spec.js'],
-    styles: ['./app/**/*.css', './app/**/*.scss'],
+    // styles: ['./app/**/*.css', './app/**/*.scss'],
+    styles: ['./app/**/*.css', './app/styles/main.less', './app/modules/**/*.less'],
+    stylesIncludes: ['./bower_components/bootstrap/less', './bower_components/font-awesome/less','./app/styles'],
     images: './images/**/*',
-    //fonts: ['./bower_components/bootstrap/dist/fonts/*'],
+    fonts: ['./bower_components/bootstrap/dist/fonts/*', './bower_components/font-awesome/fonts/*'],
     index: './app/index.html',
     partials: ['app/**/*.html', '!app/index.html'],
     distDev: './dist.dev',
@@ -80,7 +82,6 @@ pipes.builtVendorScriptsDev = function() {
 pipes.builtVendorScriptsProd = function() {
     return gulp.src(bowerFiles())
         .pipe(pipes.orderedVendorScripts())
-        .pipe(plugins.debug())
         .pipe(plugins.concat('vendor.min.js'))
         .pipe(plugins.uglify())
         .pipe(gulp.dest(paths.distScriptsProd));
@@ -114,18 +115,25 @@ pipes.scriptedPartials = function() {
 
 pipes.builtStylesDev = function() {
     return gulp.src(paths.styles)
-        .pipe(plugins.sass())
-        .pipe(gulp.dest(paths.distDev));
+        // .pipe(plugins.sass())
+        .pipe(plugins.less({
+          paths: paths.stylesIncludes
+        }))
+        .pipe(gulp.dest(paths.distDev + '/styles'));
 };
 
 pipes.builtStylesProd = function() {
     return gulp.src(paths.styles)
         .pipe(plugins.sourcemaps.init())
-            .pipe(plugins.sass())
-            .pipe(plugins.minifyCss())
+            // .pipe(plugins.sass())
+        .pipe(plugins.less({
+          paths: paths.stylesIncludes
+         }))
+        .pipe(plugins.concat('main.css'))
+        .pipe(plugins.minifyCss())
         .pipe(plugins.sourcemaps.write())
         .pipe(pipes.minifiedFileName())
-        .pipe(gulp.dest(paths.distProd));
+        .pipe(gulp.dest(paths.distProd + '/styles'));
 };
 
 pipes.processedFontsDev = function() {
@@ -205,13 +213,13 @@ pipes.builtIndexProd = function() {
 };
 
 pipes.builtAppDev = function() {
-//    return es.merge(pipes.builtIndexDev(), pipes.builtPartialsDev(), pipes.processedImagesDev(), pipes.processedFontsDev(), pipes.processedAssetsDev());
-    return es.merge(pipes.builtIndexDev(), pipes.builtPartialsDev(), pipes.processedImagesDev(), pipes.processedAssetsDev());
+    return es.merge(pipes.builtIndexDev(), pipes.builtPartialsDev(), pipes.processedImagesDev(), pipes.processedFontsDev(), pipes.processedAssetsDev());
+//    return es.merge(pipes.builtIndexDev(), pipes.builtPartialsDev(), pipes.processedImagesDev(), pipes.processedAssetsDev());
 };
 
 pipes.builtAppProd = function() {
-//    return es.merge(pipes.builtIndexProd(), pipes.processedImagesProd(), pipes.processedFontsProd(), pipes.processedAssetsProd());
-    return es.merge(pipes.builtIndexProd(), pipes.processedImagesProd());
+    return es.merge(pipes.builtIndexProd(), pipes.processedImagesProd(), pipes.processedFontsProd(), pipes.processedAssetsProd());
+//    return es.merge(pipes.builtIndexProd(), pipes.processedImagesProd());
 };
 
 // == TASKS ========
