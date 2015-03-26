@@ -8,7 +8,11 @@ var Q = require('q');
 
 // == PATH STRINGS ========
 
+var appName = 'app';
+
 var paths = {
+    modulesBase: './app/modules',
+    assets: ['app/**/assets/**/*'],
     scripts: ['app/**/*.js','!app/**/*.spec.js'],
     styles: ['./app/**/*.css', './app/**/*.scss'],
     images: './images/**/*',
@@ -26,7 +30,8 @@ var pipes = {};
 
 pipes.orderedVendorScripts = function() {
     return plugins.order([
-      'angular.js'
+      'angular.js', // Make sure angular is first
+      'app/modules/*/*.js' // Get the top-level loader for each module first
     ]);
 };
 
@@ -100,7 +105,7 @@ pipes.scriptedPartials = function() {
         .pipe(plugins.htmlhint.failReporter())
         .pipe(plugins.htmlmin({collapseWhitespace: true, removeComments: true}))
         .pipe(plugins.ngHtml2js({
-            moduleName: "healthyGulpAngularApp"
+            moduleName: appName
         }));
 };
 
@@ -129,6 +134,20 @@ pipes.processedImagesProd = function() {
     return gulp.src(paths.images)
         .pipe(gulp.dest(paths.distProd + '/images/'));
 };
+
+pipes.processedAssetsDev = function() {
+  return gulp.src(paths.assets, {base: paths.modulesBase})
+    .pipe(plugins.rename(function(path) {
+      path.dirname = path.dirname.replace(/\/assets/,'');
+    }))
+    .pipe(gulp.dest(paths.distDev + '/assets/'));
+};
+
+pipes.processedAssetsProd = function() {
+  return gulp.src(paths.assets)
+    .pipe(gulp.dest(paths.distProd + '/assets/'));
+};
+
 
 pipes.validatedIndex = function() {
     return gulp.src(paths.index)
@@ -170,11 +189,11 @@ pipes.builtIndexProd = function() {
 };
 
 pipes.builtAppDev = function() {
-    return es.merge(pipes.builtIndexDev(), pipes.builtPartialsDev(), pipes.processedImagesDev());
+    return es.merge(pipes.builtIndexDev(), pipes.builtPartialsDev(), pipes.processedImagesDev(), pipes.processedAssetsDev());
 };
 
 pipes.builtAppProd = function() {
-    return es.merge(pipes.builtIndexProd(), pipes.processedImagesProd());
+    return es.merge(pipes.builtIndexProd(), pipes.processedImagesProd(), pipes.processedAssetsProd());
 };
 
 // == TASKS ========

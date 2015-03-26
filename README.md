@@ -5,6 +5,7 @@
 * Removed Modernizr from bower.json since it's not an official bower module
 * Added Modernizer cdnjs URL to index.html
 * Added support for HTML5 Mode (modified app.js and server.js)
+* Added angular material
 
 Original README.md below:
 

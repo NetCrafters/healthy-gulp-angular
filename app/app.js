@@ -6,9 +6,15 @@ if ('addEventListener' in document) {
     }, false);
 }
 
-var app = angular.module('app', ['ui.router','app.demo']);
 
-app.config(function($locationProvider, $urlRouterProvider, $stateProvider) {
+function AppController($log) {
+  $log.debug("AppController Loaded");
+  var self = this;
+}
+
+// Angular Setup
+var app = angular.module('app', ['app.demo','app.home']);
+app.config(function($locationProvider, $urlRouterProvider) {
 
     // Requires server redirection!
     $locationProvider
@@ -17,15 +23,9 @@ app.config(function($locationProvider, $urlRouterProvider, $stateProvider) {
 
     $urlRouterProvider.otherwise('/home');
 
-    $stateProvider
-
-      .state('home', {
-        url: '/home',
-        templateUrl: 'modules/home/home.html'
-      });
-
-
   });
+
+app.controller('AppController',AppController);
 
 
 
