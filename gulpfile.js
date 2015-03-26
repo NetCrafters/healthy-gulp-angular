@@ -6,9 +6,10 @@ var bowerFiles = require('main-bower-files');
 var print = require('gulp-print');
 var Q = require('q');
 
-// == PATH STRINGS ========
 
 var appName = 'app';
+
+// == PATH STRINGS ========
 
 var paths = {
     modulesBase: './app/modules',
@@ -214,12 +215,10 @@ pipes.builtIndexProd = function() {
 
 pipes.builtAppDev = function() {
     return es.merge(pipes.builtIndexDev(), pipes.builtPartialsDev(), pipes.processedImagesDev(), pipes.processedFontsDev(), pipes.processedAssetsDev());
-//    return es.merge(pipes.builtIndexDev(), pipes.builtPartialsDev(), pipes.processedImagesDev(), pipes.processedAssetsDev());
 };
 
 pipes.builtAppProd = function() {
     return es.merge(pipes.builtIndexProd(), pipes.processedImagesProd(), pipes.processedFontsProd(), pipes.processedAssetsProd());
-//    return es.merge(pipes.builtIndexProd(), pipes.processedImagesProd());
 };
 
 // == TASKS ========
