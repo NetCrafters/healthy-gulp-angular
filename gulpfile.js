@@ -80,6 +80,7 @@ pipes.builtVendorScriptsDev = function() {
 pipes.builtVendorScriptsProd = function() {
     return gulp.src(bowerFiles())
         .pipe(pipes.orderedVendorScripts())
+        .pipe(plugins.debug())
         .pipe(plugins.concat('vendor.min.js'))
         .pipe(plugins.uglify())
         .pipe(gulp.dest(paths.distScriptsProd));
