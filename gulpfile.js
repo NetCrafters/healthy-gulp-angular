@@ -12,16 +12,18 @@ var appName = 'app';
 
 var paths = {
     modulesBase: './app/modules',
-    assets: ['app/**/assets/**/*'],
-    scripts: ['app/**/*.js','!app/**/*.spec.js'],
+    assets: ['./app/**/assets/**/*'],
+    scripts: ['./app/**/*.js','!app/**/*.spec.js'],
     styles: ['./app/**/*.css', './app/**/*.scss'],
     images: './images/**/*',
+    //fonts: ['./bower_components/bootstrap/dist/fonts/*'],
     index: './app/index.html',
     partials: ['app/**/*.html', '!app/index.html'],
     distDev: './dist.dev',
     distProd: './dist.prod',
     distScriptsProd: './dist.prod/scripts',
-    scriptsDevServer: 'devServer/**/*.js'
+    scriptsDevServer: './devServer/**/*.js'
+
 };
 
 // == PIPE SEGMENTS ========
@@ -72,7 +74,7 @@ pipes.builtAppScriptsProd = function() {
 
 pipes.builtVendorScriptsDev = function() {
     return gulp.src(bowerFiles())
-        .pipe(gulp.dest('dist.dev/bower_components'));
+      .pipe(gulp.dest('dist.dev/bower_components'));
 };
 
 pipes.builtVendorScriptsProd = function() {
@@ -124,6 +126,16 @@ pipes.builtStylesProd = function() {
         .pipe(pipes.minifiedFileName())
         .pipe(gulp.dest(paths.distProd));
 };
+
+pipes.processedFontsDev = function() {
+    return gulp.src(paths.fonts)
+        .pipe(gulp.dest(paths.distDev + '/fonts/'));
+};
+pipes.processedFontsProd = function() {
+    return gulp.src(paths.fonts)
+        .pipe(gulp.dest(paths.distProd + '/fonts/'));
+};
+
 
 pipes.processedImagesDev = function() {
     return gulp.src(paths.images)
@@ -192,11 +204,13 @@ pipes.builtIndexProd = function() {
 };
 
 pipes.builtAppDev = function() {
+//    return es.merge(pipes.builtIndexDev(), pipes.builtPartialsDev(), pipes.processedImagesDev(), pipes.processedFontsDev(), pipes.processedAssetsDev());
     return es.merge(pipes.builtIndexDev(), pipes.builtPartialsDev(), pipes.processedImagesDev(), pipes.processedAssetsDev());
 };
 
 pipes.builtAppProd = function() {
-    return es.merge(pipes.builtIndexProd(), pipes.processedImagesProd(), pipes.processedAssetsProd());
+//    return es.merge(pipes.builtIndexProd(), pipes.processedImagesProd(), pipes.processedFontsProd(), pipes.processedAssetsProd());
+    return es.merge(pipes.builtIndexProd(), pipes.processedImagesProd());
 };
 
 // == TASKS ========
@@ -312,7 +326,6 @@ gulp.task('watch-dev', ['clean-build-app-dev', 'validate-devserver-scripts'], fu
 
     // watch assets 
     gulp.watch(paths.assets, function() {
-      console.log("Assets changed!");
         return pipes.processedAssetsDev()
           .pipe(plugins.livereload());
     });

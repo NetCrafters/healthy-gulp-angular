@@ -8,10 +8,22 @@
     "angular-ui-router": "^0.2.13",
     "angular-animate": "^1.3.15",
     "fastclick": "~1.0.6",
-    "bootstrap": "~3.3.4",
-    "angular-bootstrap": "angular-ui/bootstrap-bower#~0.12.1"
+    "angular-bootstrap": "latest",
+    "bootstrap": "~3.3.4"
   },
   "devDependencies": {
     "angular-mocks": "^1.3.15"
+  },
+  "overrides": {
+    "bootstrap": {
+      "ignore": false,
+      "main" : [ "dist/css/bootstrap.css"]
+    },
+    "angular-bootstrap": {
+      "main": [
+        "ui-bootstrap-tpls.js",
+        "ui-bootstrap.js"
+      ]
+    }
   }
 }
