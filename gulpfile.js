@@ -9,7 +9,7 @@ var Q = require('q');
 // == PATH STRINGS ========
 
 var paths = {
-    scripts: 'app/**/*.js',
+    scripts: ['app/**/*.js','!app/**/*.spec.js'],
     styles: ['./app/**/*.css', './app/**/*.scss'],
     images: './images/**/*',
     index: './app/index.html',
@@ -25,7 +25,9 @@ var paths = {
 var pipes = {};
 
 pipes.orderedVendorScripts = function() {
-    return plugins.order(['jquery.js', 'angular.js']);
+    return plugins.order([
+      'angular.js'
+    ]);
 };
 
 pipes.orderedAppScripts = function() {
@@ -57,6 +59,7 @@ pipes.builtAppScriptsProd = function() {
         .pipe(pipes.orderedAppScripts())
         .pipe(plugins.sourcemaps.init())
             .pipe(plugins.concat('app.min.js'))
+            .pipe(plugins.ngAnnotate())
             .pipe(plugins.uglify())
         .pipe(plugins.sourcemaps.write())
         .pipe(gulp.dest(paths.distScriptsProd));

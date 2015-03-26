@@ -1,15 +1,32 @@
-angular.module('healthyGulpAngularApp', ['ui.router'])
+(function() { 
 
-.config(['$stateProvider', '$urlRouterProvider',
-    function($stateProvider, $urlRouterProvider) {
+if ('addEventListener' in document) {
+    document.addEventListener('DOMContentLoaded', function() {
+        FastClick.attach(document.body);
+    }, false);
+}
 
-        $urlRouterProvider.otherwise('/');
+var app = angular.module('app', ['ui.router','app.demo']);
 
-        $stateProvider
+app.config(function($locationProvider, $urlRouterProvider, $stateProvider) {
 
-            .state('home', {
-                url: '/',
-                templateUrl: 'components/home.html'
-            });
+    // Requires server redirection!
+    $locationProvider
+      .html5Mode(true)
+      .hashPrefix('!');
 
-    }]);
+    $urlRouterProvider.otherwise('/home');
+
+    $stateProvider
+
+      .state('home', {
+        url: '/home',
+        templateUrl: 'modules/home/home.html'
+      });
+
+
+  });
+
+
+
+})();
