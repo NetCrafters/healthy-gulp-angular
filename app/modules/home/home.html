@@ -2,13 +2,17 @@
 <div ng-controller="HomeController as vm" layout="column">
 
   <section layout="row" flex>
+    <md-toolbar>
+  This is the top
+    </md-toolbar>
+  </section>
+
+  <section layout="row" flex>
 
     <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
-      <md-toolbar class="md-theme-indigo">
-        <h1 class="md-toolbar-tools">Sidenav Left</h1>
-      </md-toolbar>
 
       <md-content class="md-padding" ng-controller="LeftController as vm">
+      Sidenav Left
         <md-button ng-click="vm.close()" class="md-primary" hide-gt-md>
           Close Sidenav Left
         </md-button>
