@@ -12,9 +12,9 @@ app.use(methodOverride('X-HTTP-Method-Override')); // override with the X-HTTP-M
 app.use(express.static(__dirname + '/' + staticdir)); 
 
 // Force index.html if necessary for HTML5 Mode
-app.use('/*', function(req, res){
-  res.sendFile(__dirname + '/' + staticdir + '/index.html');
-});
+//app.use('/*', function(req, res){
+//  res.sendFile(__dirname + '/' + staticdir + '/index.html');
+//});
 
 // routes ==================================================
 require('./devServer/routes')(app); // configure our routes

@@ -17,6 +17,7 @@ var paths = {
     scripts: ['./app/**/*.js','!app/**/*.spec.js'],
     // styles: ['./app/**/*.css', './app/**/*.scss'],
     styles: ['./app/**/*.css', './app/styles/main.less', './app/modules/**/*.less'],
+    stylesWatch: ['./app/**/*.css', './app/styles/main.less','./app/styles/site.less', './app/modules/**/*.less'],
     stylesIncludes: ['./bower_components/bootstrap/less', './bower_components/font-awesome/less','./app/styles'],
     images: './images/**/*',
     fonts: ['./bower_components/bootstrap/dist/fonts/*', './bower_components/font-awesome/fonts/*'],
@@ -327,7 +328,7 @@ gulp.task('watch-dev', ['clean-build-app-dev', 'validate-devserver-scripts'], fu
     });
 
     // watch styles
-    gulp.watch(paths.styles, function() {
+    gulp.watch(paths.stylesWatch, function() {
         return pipes.builtStylesDev()
             .pipe(plugins.livereload());
     });

@@ -1,31 +1,35 @@
-var locations = angular.module('app.locations',[]);
+(function() {
 
-locations.run(function($log) {
-  $log.debug("Module 'app.locations' loaded.");
-});
+  'use strict';
 
-locations.config(function() {
-});
+  var module = angular.module('app.locations',[]);
 
-// States
-locations.config(function($stateProvider) {
+  module.run(function($log) {
 
-  $stateProvider
-    .state('locations', {
-      abstract: true,
-    })
-    .state('locations.us', {
-      url: '/locations/us',
-      templateUrl: 'modules/locations/locations.html'
-    })
-  ;
-});
+    $log.debug("Module 'app.locations' loaded.");
 
-// Controller(s)
-locations.controller('HomeController', HomeController);
+  });
 
-// Code
-function LocationsController($log) {
-  var self = this;
-  self.world = 'World';
-}
+  module.config(function() {
+
+  });
+
+  // States
+  module.config(function($stateProvider) {
+
+    $stateProvider
+      .state('locations', {
+        abstract: true,
+      });
+  });
+
+  // Controller(s)
+  module.controller('LocationsCtrl', LocationsCtrl);
+
+  // Code
+  function LocationsCtrl($log) {
+    var self = this;
+    self.world = 'World';
+  }
+
+})();
