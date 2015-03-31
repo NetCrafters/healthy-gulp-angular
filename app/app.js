@@ -16,7 +16,7 @@
 
 
   // Angular Setup
-  var app = angular.module('app', ['app.webhook']);
+  var app = angular.module('app', ['app.core','app.webhook']);
   app.config(function($locationProvider, $urlRouterProvider) {
 
     // Requires server redirection!
