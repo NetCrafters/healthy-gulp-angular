@@ -24,8 +24,16 @@
         url: '/{slug:.*}',
         views: {
           'content': {
-            template: '<h1>Webhook</h1>',
-            controller: 'WebhookCtrl as webhook'
+            controller: 'WebhookCtrl as webhook',
+
+            // This should probably use a templateUrl
+            template: '<pre>{{ webhook.pageData | json }}</pre>'
+          }
+        },
+        resolve: {
+          pageData: function(WebhookService, $stateParams, $log) {
+            $log.debug("Resolving page data: " + $stateParams.slug);
+            return WebhookService.getPage($stateParams.slug);
           }
         }
       });
@@ -37,44 +45,53 @@
   // Services
   module.factory('WebhookService', WebhookService);
 
+
+  ////////////////////
+
+
   // Code
-  function WebhookCtrl(WebhookService, $stateParams, $log) {
-
-    var self = this;
-
+  function WebhookCtrl(WebhookService, $stateParams, pageData, $log) {
     $log.debug('WebhookCtrl: Loaded.');
 
-    $log.debug('StateParams: ', $stateParams);
-
-    WebhookService.getPage('plages/testing-slug');
-
+    var self = this;
+    self.pageData = pageData;
   }
 
   function WebhookService(webhookConfig, $http, $q, $log) {
 
     var self = this;
 
-    $log.debug('WebhookPageService: Loaded.');
+    $log.debug('WebhookService: Loaded.');
 
     var getPage=function(slug) {
+      $log.debug("WebhookService: In getPage(" + slug + ")");
       var deferred = $q.defer();
       if(!slug) deferred.reject();
       $http.get(webhookConfig.API_URL + '/content-type/pages?slug=' + slug).then(
-        function(data) {
-          $log.debug(data);
-          deferred.resolve(data);
+        function(result) {
+          deferred.resolve(result.data);
         },
         function(err) {
-          deferred.reject(err);
+          $log.debug("WebhookService: Error retrieving 'slug'.");
+
+          var tempPage = {};
+          tempPage.status = err.status;
+          tempPage.content = err.data;
+
+          // We *want* the service-side HTTP error codes and messages
+          // to display in the bad route, so we actually resolve with the error
+          deferred.resolve(tempPage);
         }
-      );
+      ).catch(function(err) {
+          $log.debug("WebhookService: Caught an error: ", err);
+        });
 
       return deferred.promise;
-    }
+    };
 
     return {
       getPage: getPage
-    }
+    };
 
   }
 

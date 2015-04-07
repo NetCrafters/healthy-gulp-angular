@@ -4,11 +4,7 @@
 
   var module = angular.module('app.core',
     [
-      'ui.router',
-      'app.core.sidebar',
-      'app.core.header',
-      'app.core.footer',
-      'app.core.jumbotron'
+      'ui.router'
     ]
   );
 
@@ -21,38 +17,22 @@
           templateUrl: 'modules/core/layout/layout.html'
         },
         'content@root': {
-          templateUrl: 'modules/core/layout/content.html'
+          template: '<h1>This is the content</h1>'
         },
         'sidebar@root': {
-          templateUrl: 'modules/core/layout/sidebar.html',
-          controller: 'SidebarCtrl as sidebar'
+          templateUrl: 'modules/core/layout/sidebar.html'
         },
         'header@root': {
-          templateUrl: 'modules/core/layout/header.html',
-          controller: 'HeaderCtrl as header'
+          templateUrl: 'modules/core/layout/header.html'
         },
         'footer@root': {
-          templateUrl: 'modules/core/layout/footer.html',
-          controller: 'FooterCtrl as footer'
+          templateUrl: 'modules/core/layout/footer.html'
         },
         'jumbotron@root' : {
-          templateUrl: 'modules/core/layout/jumbotron.html',
-          controller: 'JumbotronCtrl as jumbotron'
+          templateUrl: 'modules/core/layout/jumbotron.html'
         }
       }
     });
-
-    //$stateProvider
-    //  .state('webhook', {
-    //    parent: 'root',
-    //    url: '/foo',
-    //    views: {
-    //      'content': {
-    //        template: '<h1>Webhook</h1>'
-    //      }
-    //    }
-    //  });
-
   });
 
   module.run(function($log) {
