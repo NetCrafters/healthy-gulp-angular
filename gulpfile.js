@@ -6,18 +6,28 @@ var bowerFiles = require('main-bower-files');
 var print = require('gulp-print');
 var Q = require('q');
 
+
+var appName = 'app';
+
 // == PATH STRINGS ========
 
 var paths = {
-    scripts: 'app/**/*.js',
-    styles: ['./app/**/*.css', './app/**/*.scss'],
+    modulesBase: './app/modules',
+    assets: ['./app/**/assets/**/*'],
+    scripts: ['./app/**/*.js','!app/**/*.spec.js'],
+    // styles: ['./app/**/*.css', './app/**/*.scss'],
+    styles: ['./app/**/*.css', './app/styles/main.less', './app/modules/**/*.less'],
+    stylesWatch: ['./app/**/*.css', './app/styles/main.less','./app/styles/site.less', './app/modules/**/*.less'],
+    stylesIncludes: ['./bower_components/bootstrap/less', './bower_components/font-awesome/less','./app/styles'],
     images: './images/**/*',
+    fonts: ['./bower_components/bootstrap/dist/fonts/*', './bower_components/font-awesome/fonts/*'],
     index: './app/index.html',
     partials: ['app/**/*.html', '!app/index.html'],
     distDev: './dist.dev',
     distProd: './dist.prod',
     distScriptsProd: './dist.prod/scripts',
-    scriptsDevServer: 'devServer/**/*.js'
+    scriptsDevServer: './devServer/**/*.js'
+
 };
 
 // == PIPE SEGMENTS ========
@@ -25,7 +35,10 @@ var paths = {
 var pipes = {};
 
 pipes.orderedVendorScripts = function() {
-    return plugins.order(['jquery.js', 'angular.js']);
+    return plugins.order([
+      'angular.js', // Make sure angular is first
+      'app/modules/*/*.js' // Get the top-level loader for each module first
+    ]);
 };
 
 pipes.orderedAppScripts = function() {
@@ -57,6 +70,7 @@ pipes.builtAppScriptsProd = function() {
         .pipe(pipes.orderedAppScripts())
         .pipe(plugins.sourcemaps.init())
             .pipe(plugins.concat('app.min.js'))
+            .pipe(plugins.ngAnnotate())
             .pipe(plugins.uglify())
         .pipe(plugins.sourcemaps.write())
         .pipe(gulp.dest(paths.distScriptsProd));
@@ -64,7 +78,7 @@ pipes.builtAppScriptsProd = function() {
 
 pipes.builtVendorScriptsDev = function() {
     return gulp.src(bowerFiles())
-        .pipe(gulp.dest('dist.dev/bower_components'));
+      .pipe(gulp.dest('dist.dev/bower_components'));
 };
 
 pipes.builtVendorScriptsProd = function() {
@@ -97,25 +111,42 @@ pipes.scriptedPartials = function() {
         .pipe(plugins.htmlhint.failReporter())
         .pipe(plugins.htmlmin({collapseWhitespace: true, removeComments: true}))
         .pipe(plugins.ngHtml2js({
-            moduleName: "healthyGulpAngularApp"
+            moduleName: appName
         }));
 };
 
 pipes.builtStylesDev = function() {
     return gulp.src(paths.styles)
-        .pipe(plugins.sass())
-        .pipe(gulp.dest(paths.distDev));
+        // .pipe(plugins.sass())
+        .pipe(plugins.less({
+          paths: paths.stylesIncludes
+        }))
+        .pipe(gulp.dest(paths.distDev + '/styles'));
 };
 
 pipes.builtStylesProd = function() {
     return gulp.src(paths.styles)
         .pipe(plugins.sourcemaps.init())
-            .pipe(plugins.sass())
-            .pipe(plugins.minifyCss())
+            // .pipe(plugins.sass())
+        .pipe(plugins.less({
+          paths: paths.stylesIncludes
+         }))
+        .pipe(plugins.concat('main.css'))
+        .pipe(plugins.minifyCss())
         .pipe(plugins.sourcemaps.write())
         .pipe(pipes.minifiedFileName())
-        .pipe(gulp.dest(paths.distProd));
+        .pipe(gulp.dest(paths.distProd + '/styles'));
 };
+
+pipes.processedFontsDev = function() {
+    return gulp.src(paths.fonts)
+        .pipe(gulp.dest(paths.distDev + '/fonts/'));
+};
+pipes.processedFontsProd = function() {
+    return gulp.src(paths.fonts)
+        .pipe(gulp.dest(paths.distProd + '/fonts/'));
+};
+
 
 pipes.processedImagesDev = function() {
     return gulp.src(paths.images)
@@ -126,6 +157,23 @@ pipes.processedImagesProd = function() {
     return gulp.src(paths.images)
         .pipe(gulp.dest(paths.distProd + '/images/'));
 };
+
+pipes.processedAssetsDev = function() {
+  return gulp.src(paths.assets, {base: paths.modulesBase})
+    .pipe(plugins.rename(function(path) {
+      path.dirname = path.dirname.replace(/\/assets/,'');
+    }))
+    .pipe(gulp.dest(paths.distDev + '/assets/'));
+};
+
+pipes.processedAssetsProd = function() {
+  return gulp.src(paths.assets, {base: paths.modulesBase})
+    .pipe(plugins.rename(function(path) {
+      path.dirname = path.dirname.replace(/\/assets/,'');
+    }))
+    .pipe(gulp.dest(paths.distProd + '/assets/'));    
+};
+
 
 pipes.validatedIndex = function() {
     return gulp.src(paths.index)
@@ -167,11 +215,11 @@ pipes.builtIndexProd = function() {
 };
 
 pipes.builtAppDev = function() {
-    return es.merge(pipes.builtIndexDev(), pipes.builtPartialsDev(), pipes.processedImagesDev());
+    return es.merge(pipes.builtIndexDev(), pipes.builtPartialsDev(), pipes.processedImagesDev(), pipes.processedFontsDev(), pipes.processedAssetsDev());
 };
 
 pipes.builtAppProd = function() {
-    return es.merge(pipes.builtIndexProd(), pipes.processedImagesProd());
+    return es.merge(pipes.builtIndexProd(), pipes.processedImagesProd(), pipes.processedFontsProd(), pipes.processedAssetsProd());
 };
 
 // == TASKS ========
@@ -280,9 +328,15 @@ gulp.task('watch-dev', ['clean-build-app-dev', 'validate-devserver-scripts'], fu
     });
 
     // watch styles
-    gulp.watch(paths.styles, function() {
+    gulp.watch(paths.stylesWatch, function() {
         return pipes.builtStylesDev()
             .pipe(plugins.livereload());
+    });
+
+    // watch assets 
+    gulp.watch(paths.assets, function() {
+        return pipes.processedAssetsDev()
+          .pipe(plugins.livereload());
     });
 
 });
@@ -327,4 +381,4 @@ gulp.task('watch-prod', ['clean-build-app-prod', 'validate-devserver-scripts'], 
 });
 
 // default task builds for prod
-gulp.task('default', ['clean-build-app-prod']);
+gulp.task('default', ['watch-dev']);

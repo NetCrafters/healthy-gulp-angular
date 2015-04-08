@@ -1,3 +1,16 @@
+### Modifications from Original
+
+* Removed Foundation
+* Updated to current Angular release (1.3.15 for now)
+* Removed Modernizr from bower.json since it's not an official bower module
+* Added Modernizer cdnjs URL to index.html
+* Added support for HTML5 Mode (modified app.js and server.js)
+* Added angular material
+
+Original README.md below:
+
+---
+
 This project is a starting point for AngularJS projects using the [Gulp](http://gulpjs.com/) streaming build system. Almost everything important is in [gulpfile.js](https://github.com/paislee/healthy-gulp-angular/blob/master/gulpfile.js).
 
 For a full discussion of the setup, please refer to the companion [blog post](http://paislee.io/a-healthy-gulp-setup-for-angularjs-projects).
