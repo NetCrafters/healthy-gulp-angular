@@ -12,7 +12,7 @@
 
     $stateProvider.state('root', {
       abstract: true,
-      views: {
+      views: { 
         '' : {
           templateUrl: 'modules/core/layout/layout.html'
         },
