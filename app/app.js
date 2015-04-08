@@ -1,4 +1,3 @@
-
 (function() {
 
     'use strict';
@@ -14,9 +13,16 @@
     var self = this;
   }
 
-
   // Angular Setup
-  var app = angular.module('app', ['app.core','app.webhook']);
+  var app = angular.module('app', [
+    'app.core',     // app.core contains the main layout for the site.
+                    // Override as necessary in your project.
+
+                    // <-- Other project requirements here
+
+    'app.webhook'   // app.webhook should always be last since it
+                    // uses a catch-all route
+  ]);
   app.config(function($locationProvider, $urlRouterProvider) {
 
     // Requires server redirection!
@@ -32,6 +38,5 @@
   });
 
   app.controller('AppController',AppController);
-
 
 })();

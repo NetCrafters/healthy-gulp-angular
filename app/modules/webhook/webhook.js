@@ -24,16 +24,28 @@
         url: '/{slug:.*}',
         views: {
           'content': {
-            controller: 'WebhookCtrl as webhook',
+            controller: 'WebhookCtrl as content',
 
             // This should probably use a templateUrl
-            template: '<pre>{{ webhook.pageData | json }}</pre>'
+            template: '<pre>{{ content.pageData | json }}</pre>'
+          },
+          'header': {
+            template: '{{header.widgetData | json}}',
+            controller: function(widgetData) {
+              var self=this;
+              self.widgetData = widgetData;
+            },
+            controllerAs: 'header'
           }
         },
         resolve: {
           pageData: function(WebhookService, $stateParams, $log) {
             $log.debug("Resolving page data: " + $stateParams.slug);
-            return WebhookService.getPage($stateParams.slug);
+            return WebhookService.getContent('pages',$stateParams.slug);
+          },
+          widgetData: function(WebhookService, $stateParams, $log) {
+            $log.debug("Resolving page data: " + $stateParams.slug);
+            return WebhookService.getContent('widgets');
           }
         }
       });
@@ -46,15 +58,17 @@
   module.factory('WebhookService', WebhookService);
 
 
+
   ////////////////////
 
 
   // Code
-  function WebhookCtrl(WebhookService, $stateParams, pageData, $log) {
+  function WebhookCtrl(WebhookService, $stateParams, pageData, widgetData, $log) {
     $log.debug('WebhookCtrl: Loaded.');
 
     var self = this;
     self.pageData = pageData;
+    self.widgetData = widgetData;
   }
 
   function WebhookService(webhookConfig, $http, $q, $log) {
@@ -63,11 +77,11 @@
 
     $log.debug('WebhookService: Loaded.');
 
-    var getPage=function(slug) {
-      $log.debug("WebhookService: In getPage(" + slug + ")");
+    var getContent=function(type,slug) {
+      $log.debug("WebhookService: In getContent(" + type + "/" + slug + ")");
       var deferred = $q.defer();
-      if(!slug) deferred.reject();
-      $http.get(webhookConfig.API_URL + '/content-type/pages?slug=' + slug).then(
+      if(!type) deferred.reject();
+      $http.get(webhookConfig.API_URL + '/content-type/' + type + ( slug ? '?slug=' + slug : '') ).then(
         function(result) {
           deferred.resolve(result.data);
         },
@@ -89,8 +103,9 @@
       return deferred.promise;
     };
 
+
     return {
-      getPage: getPage
+      getContent: getContent
     };
 
   }
