@@ -42,7 +42,7 @@
     self.menuData = menuData;
     self.ocToggle = function() {
       OCFactory.toggle();
-    }
+    };
   }
 
   FooterCtrl.$inject = [ 'widgetData', '$log'];
@@ -73,7 +73,7 @@
     var self=this;
     self.ocToggle = function() {
       OCFactory.toggle();
-    }
+    };
   }
 
 })();
