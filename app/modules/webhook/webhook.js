@@ -17,40 +17,7 @@
   });
 
   // States
-  angular.module(module).config(function($stateProvider) {
-
-    $stateProvider
-      .state('webhook', {
-        parent: 'root', 
-        url: '/{slug:.*}',
-        views: {
-          'content': {
-            controller: 'WebhookCtrl as content',
-
-            // This should probably use a templateUrl
-            template: '<pre>{{ content.pageData | json }}</pre>'
-          },
-          'header': {
-            template: '{{header.widgetData | json}}',
-            controller: function(widgetData) {
-              var self=this;
-              self.widgetData = widgetData;
-            },
-            controllerAs: 'header'
-          }
-        }, 
-        resolve: {
-          pageData: function(WebhookService, $stateParams, $log) {
-            $log.debug("Resolving page data: " + $stateParams.slug);
-            return WebhookService.getContent('pages',$stateParams.slug);
-          },
-          widgetData: function(WebhookService, $stateParams, $log) {
-            $log.debug("Resolving page data: " + $stateParams.slug);
-            return WebhookService.getContent('widgets');
-          }
-        }
-      });
-  });
+  angular.module(module).config(WebhookConfig);
 
   // Controller(s)
   angular.module(module).controller('WebhookCtrl', WebhookCtrl);
@@ -62,8 +29,69 @@
 
   ////////////////////
 
-
   // Code
+
+  WebhookConfig.$inject = [ '$stateProvider' ];
+
+  // The templates here are just placeholders. They should really point to your
+  // actual layouts.
+  function WebhookConfig($stateProvider) {
+    $stateProvider
+      .state('webhook', {
+        parent: 'root',
+        url: '/{slug:.*}',
+        views: {
+          'content': {
+            controller: 'WebhookCtrl as content',
+            controllerAs: 'content',
+            template: '<pre>{{ content.pageData | json }}</pre>'
+          },
+          'jumbotron': {
+            controller: 'WebhookCtrl as content',
+            template: '<h1>Header: {{ content.pageData.featured_image}}</h1>'
+          },
+          'header': {
+            template: '{{header.widgetData.header | json}}',
+            controller: function(widgetData) {
+              var self=this;
+              self.widgetData = widgetData;
+            },
+            controllerAs: 'header'
+          },
+          'footer': {
+            template: '{{footer.widgetData.footer | json}}',
+            controller: function(widgetData) {
+              var self=this;
+              self.widgetData = widgetData;
+            },
+            controllerAs: 'footer'
+          },
+          'sidebar': {
+            template: '{{sidebar.menuData | json }}',
+            controller: function(menuData) {
+              var self=this;
+              self.menuData = menuData;
+            },
+            controllerAs: 'sidebar'
+          }
+        },
+        resolve: {
+          pageData: function(WebhookService, $stateParams, $log) {
+            $log.debug("Resolving page data: " + $stateParams.slug);
+            return WebhookService.getContent('pages',$stateParams.slug);
+          },
+          widgetData: function(WebhookService, $stateParams, $log) {
+            $log.debug("Resolving page data: " + $stateParams.slug);
+            return WebhookService.getContent('widgets');
+          },
+          menuData: function(WebhookService, $log) {
+            $log.debug("Resolving menu data: ");
+            return WebhookService.getMenu();
+          }
+        }
+      });
+  }
+
   WebhookCtrl.$inject = ['WebhookService', '$stateParams', 'pageData', 'widgetData', '$log'];
   function WebhookCtrl(WebhookService, $stateParams, pageData, widgetData, $log) {
     $log.debug('WebhookCtrl: Loaded.');
@@ -80,7 +108,7 @@
 
     $log.debug('WebhookService: Loaded.');
 
-    var getContent=function(type,slug) {
+    var getContent = function(type,slug) {
       $log.debug("WebhookService: In getContent(" + type + "/" + slug + ")");
       var deferred = $q.defer();
       if(!type) deferred.reject();
@@ -106,9 +134,26 @@
       return deferred.promise;
     };
 
+    var getMenu = function() {
+      $log.debug("WebhookService: In getMenu()");
+      var deferred = $q.defer();
+      $http.get(webhookConfig.API_URL + '/menu').then(
+        function(result) {
+          deferred.resolve(result.data);
+        },
+        function(err) {
+          $log.debug("WebhookService: Error retrieving menu.");
+          deferred.reject($err);
+        }
+      );
+
+      return deferred.promise;
+    };
+
 
     return {
-      getContent: getContent
+      getContent: getContent,
+      getMenu: getMenu
     };
 
   }
