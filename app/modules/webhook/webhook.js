@@ -43,22 +43,22 @@
         views: {
           'content': {
             controller: 'WebhookCtrl as content',
-            templateUrl: '/modules/pg/templates/content.html'
+            templateUrl: 'modules/pg/templates/content.html'
           },
           'jumbotron': {
             controller: 'WebhookCtrl as content',
-            templateUrl: '/modules/pg/templates/jumbotron.html'
+            templateUrl: 'modules/pg/templates/jumbotron.html'
           },
           'header': {
-            templateUrl: '/modules/pg/templates/header.html',
+            templateUrl: 'modules/pg/templates/header.html',
             controller: 'HeaderCtrl as header'
           },
           'footer': {
-            templateUrl: '/modules/pg/templates/footer.html',
+            templateUrl: 'modules/pg/templates/footer.html',
             controller: 'FooterCtrl as footer'
           },
           'sidebar': {
-            templateUrl: '/modules/pg/templates/sidebar.html',
+            templateUrl: 'modules/pg/templates/sidebar.html',
             controller: 'SidebarCtrl as sidebar'
           }
         },

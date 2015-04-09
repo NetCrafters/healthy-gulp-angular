@@ -1,6 +1,3 @@
-// @splash-background-color: #42a7f5;
-
-
 // ngCloak
 .splash {
   display: none;
@@ -24,7 +21,99 @@
   display: block !important;
 }
 
-// Mixins
-.text-shadow (@string: 0 1px 3px rgba(0, 0, 0, 0.35)) {
-  text-shadow: @string;
+
+html, body {
+  overflow-x: hidden;
 }
+
+.body-inset {
+  background-color: @body-inset-bg-color;
+  margin: @body-inset-margin;
+}
+footer {
+  background: @footer-bg-color;
+  color: @gray-lighter;
+  margin-top: @line-height-computed;
+  a {
+    color: #fff;
+    &:hover {
+      color: @primaryLight;
+    }
+  }
+}
+
+header {
+
+  position: relative;
+
+  .ncx-header-wrapper {
+    background-size: cover;
+    background-image: url(http://cdn.serverdata.com/experiencepg/v2/images/pg-header-bg.png);
+    height: 120px;
+    -ms-behavior: url(/app/backgroundsize.min.htc);
+  }
+
+  h2.brand {
+    font-size: 18px;
+    color: #eee;
+    .text-shadow;
+    img {
+      height: 100px;
+      margin-right: 20px;
+    }
+  }
+
+  .no-hover {
+    text-decoration: none !important;
+    cursor: default;
+
+  }
+  .hover {
+    text-decoration: underline !important;
+    cursor: pointer;
+  }
+
+  .tab-wrapper {
+    font-size: 13px;
+    color: #fff;
+    a {
+      color: #fff;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .tab-right {
+      background: transparent url(http://cdn.serverdata.com/themes/pg-desktop-rev2/images/blue/header-tab.png) no-repeat right 0;
+      float: right;
+      padding-top: .5rem;
+      padding-right: 5.2rem;
+      padding-left: 2.6rem;
+      height: 26px;
+    }
+    .tab-left {
+      background: transparent url(http://cdn.serverdata.com/themes/pg-desktop-rev2/images/blue/header-tab.png) no-repeat left 0;
+      padding-top: .5rem;
+      padding-left: 7.8rem;
+      //padding-right: 2.6rem;
+      float: left;
+      height: 26px;
+    }
+  }
+
+
+  .brand-wrapper {
+    ul {
+      margin-top: 3rem;
+    }
+    .brands{
+      li {
+        display: inline-block;
+        margin-right: 1.5rem;
+        img {
+          width: 45px;
+          height: 45px;
+        }
+      }
+    }
+  }
+} // header

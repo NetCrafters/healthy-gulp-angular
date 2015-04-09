@@ -2,9 +2,6 @@
  * (c) 2013 Ciro Nunes http://cironunes.github.io/
  * License: MIT
  */
-/* prevent horizontal scroll */
-html, body {
-  overflow-x: hidden; }
 
 .off-canvas__nav {
   -webkit-transform: translate3d(0, 0, 0) translateX(-250px);
@@ -52,9 +49,29 @@ html, body {
   height: 100%;
   -webkit-user-drag: none;
   padding: 8px;
-  
+
+  color: @primaryDark;
+
+  h3 {
+    //    border-bottom: 1px solid #eee;
+    margin-right: 24px;
+  }
+  .list-group-item.header {
+    color: @primaryDark;
+  }
+  button.nav-toggle {
+    margin-top:20px;
+  }
 }
 
 .off-canvas__container {
   position: relative;
+}
+
+.off-canvas__toggle {
+  position: absolute;
+  height:27px;
+  right: 8px;
+  top: 84px;
+
 }

@@ -1,10 +1,46 @@
-<div class="row">
-  <div class="col-xs-12">
-    <button class="btn btn-default pull-left visible-xs" ng-click="header.ocToggle()">Toggle OC</button>
-    {{header.widgetData.header | json}}
-  </div>
-  <div class="col-xs-12">
-    {{header.menuData | json}}
+<div class="ncx-header-wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 col-sm-6">
+        <a class="no-hover"><h2 class="brand"><img class="hover" src="http://placehold.it/104x121" />{{ NEED_TITLE }}</h2></a>
+      </div>
+
+
+      <div class="off-canvas__toggle visible-sm visible-xs">
+        <button class="btn btn-primary btn-sm"  ng-click="header.ocToggle()">
+          <span class="glyphicon glyphicon-align-justify"></span> Menu
+        </button>
+      </div>
+
+      <div class="col-xs-12 col-sm-6">
+        <div class="visible-md visible-lg">
+          <div class="tab-wrapper pull-right">
+            <div class="tab-right"></div>
+            <div class="tab-left"><a href="#" target="_blank">Some Link</a></div>
+          </div>
+          <div class="brand-wrapper pull-right">
+            <ul class="brands">
+              <li><img src="http://placehold.it/60x60" title=""></li>
+              <li><img src="http://placehold.it/60x60" title=""></li>
+              <li><img src="http://placehold.it/60x60" title=""></li>
+              <li><img src="http://placehold.it/60x60" title=""></li>
+              <li><img src="http://placehold.it/60x60" title=""></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
+<!-- NAV -->
+<div class="container">
+  <nav class="navbar navbar-default" role="navigation">
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="#">US Locations Map</a></li>
+      <li><a href="#">Cincinnati</a></li>
+      <li><a href="#">Other City</a></li>
+    </ul>
+
+  </nav>
+</div>
