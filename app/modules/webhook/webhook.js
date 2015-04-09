@@ -51,10 +51,11 @@
             template: '<h1>Header: {{ content.pageData.featured_image}}</h1>'
           },
           'header': {
-            template: '{{header.widgetData.header | json}}',
-            controller: function(widgetData) {
+            template: '{{header.widgetData.header | json}} <button class="visible-xs btn btn-default " ng-click="header.OCToggle()">Toggle OC</button>',
+            controller: function(widgetData, OCFactory) {
               var self=this;
               self.widgetData = widgetData;
+              self.OCToggle = function() { console.log("Toggling OCF"); OCFactory.toggle(); };
             },
             controllerAs: 'header'
           },
