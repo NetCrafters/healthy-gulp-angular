@@ -1,26 +1,27 @@
 (function() {
 
   'use strict';
+  var module='app.webhook';
 
-  var module = angular.module('app.webhook',['ui.router']);
+  angular.module(module,['ui.router']);
 
-  module.run(function($log) {
+  angular.module(module).run(function($log) {
 
-    $log.debug("Module 'app.webhook' loaded.");
+    $log.debug("Module " + module + " loaded.");
 
   });
 
   // Constants
-  module.constant('webhookConfig', {
+  angular.module(module).constant('webhookConfig', {
     "API_URL" : "http://localhost:8000"
   });
 
   // States
-  module.config(function($stateProvider) {
+  angular.module(module).config(function($stateProvider) {
 
     $stateProvider
       .state('webhook', {
-        parent: 'root',
+        parent: 'root', 
         url: '/{slug:.*}',
         views: {
           'content': {
@@ -37,7 +38,7 @@
             },
             controllerAs: 'header'
           }
-        },
+        }, 
         resolve: {
           pageData: function(WebhookService, $stateParams, $log) {
             $log.debug("Resolving page data: " + $stateParams.slug);
@@ -52,10 +53,10 @@
   });
 
   // Controller(s)
-  module.controller('WebhookCtrl', WebhookCtrl);
+  angular.module(module).controller('WebhookCtrl', WebhookCtrl);
 
   // Services
-  module.factory('WebhookService', WebhookService);
+  angular.module(module).factory('WebhookService', WebhookService);
 
 
 
@@ -63,6 +64,7 @@
 
 
   // Code
+  WebhookCtrl.$inject = ['WebhookService', '$stateParams', 'pageData', 'widgetData', '$log'];
   function WebhookCtrl(WebhookService, $stateParams, pageData, widgetData, $log) {
     $log.debug('WebhookCtrl: Loaded.');
 
@@ -71,6 +73,7 @@
     self.widgetData = widgetData;
   }
 
+  WebhookService.$inject = ['webhookConfig', '$http', '$q', '$log'];
   function WebhookService(webhookConfig, $http, $q, $log) {
 
     var self = this;

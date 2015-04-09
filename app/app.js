@@ -1,6 +1,6 @@
 (function() {
 
-    'use strict';
+  'use strict';
 
   if ('addEventListener' in document) {
     document.addEventListener('DOMContentLoaded', function() {
@@ -8,13 +8,10 @@
     }, false);
   }
 
-  function AppController($log) {
-    $log.debug("AppController Loaded");
-    var self = this;
-  }
-
   // Angular Setup
-  var app = angular.module('app', [
+  var module = 'app';
+
+  angular.module(module, [
     'app.core',     // app.core contains the main layout for the site.
                     // Override as necessary in your project.
 
@@ -23,8 +20,14 @@
     'app.webhook'   // app.webhook should always be last since it
                     // uses a catch-all route
   ]);
-  app.config(function($locationProvider, $urlRouterProvider) {
+  angular.module('app').config(appConfig);
+  angular.module('app').controller('AppController',AppController);
 
+
+  // Code
+
+  appConfig.$inject = [ '$locationProvider', '$urlRouterProvider' ];
+  function appConfig($locationProvider, $urlRouterProvider) {
     // Requires server redirection!
     //$locationProvider
     //  .html5Mode(true)
@@ -34,9 +37,12 @@
       .hashPrefix('!');
 
     //$urlRouterProvider.otherwise('/not-found');
+  }
 
-  });
-
-  app.controller('AppController',AppController);
+  AppController.$inject = [$log];
+  function AppController($log) {
+    $log.debug("AppController Loaded");
+    var self = this;
+  }
 
 })();

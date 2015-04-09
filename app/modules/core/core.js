@@ -2,14 +2,28 @@
 
   'use strict';
 
-  var module = angular.module('app.core',
-    [
-      'ui.router'
-    ]
-  );
+  var module = 'app.core';
 
-  module.config(function($stateProvider) {
+  angular.module(module, [
+    'ui.router'
+  ]);
 
+  angular.module(module).config(stateConfig);
+  angular.module(module).run(appRun);
+
+  
+  ////////////////////
+
+
+  // Code
+  //
+  appRun.$inject = [ '$log' ];
+  function appRun($log) {
+    $log.debug("Module 'app.core' loaded.");
+  }
+
+  stateConfig.$inject = [ '$stateProvider' ];
+  function stateConfig($stateProvider) {
     $stateProvider.state('root', {
       abstract: true,
       views: {
@@ -32,14 +46,7 @@
           templateUrl: 'modules/core/layout/jumbotron.html'
         }
       }
-    });
-  });
-
-  module.run(function($log) {
-
-    $log.debug("Module 'app.core' loaded.");
-
-  });
-
+    }); 
+  }
 
 })();
