@@ -12,7 +12,7 @@
   var module = 'app';
 
   angular.module(module, [
-    'app.layout',   // app.default contains the main default for the site.
+    'app.defaults', // app.default contains the main default for the site.
                     // Override as necessary in your project.
 
                     // <-- Other project requirements here
