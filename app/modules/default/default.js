@@ -2,7 +2,7 @@
 
   'use strict';
 
-  var module = 'app.layout.default';
+  var module = 'app.defaults';
 
   angular.module(module, [
     'ui.router'
@@ -28,22 +28,22 @@
       abstract: true,
       views: {
         '' : {
-          templateUrl: '/modules/layout/default/templates/layout.html'
+          templateUrl: '/modules/default/templates/layout.html'
         },
         'content@root': {
           template: '<h1>This is the content</h1>'
         },
         'sidebar@root': {
-          templateUrl: '/modules/layout/default/templates/sidebar.html'
+          templateUrl: '/modules/default/templates/sidebar.html'
         },
         'header@root': {
-          templateUrl: '/modules/layout/default/templates/header.html'
+          templateUrl: '/modules/default/templates/header.html'
         },
         'footer@root': {
-          templateUrl: '/modules/layout/default/templates/footer.html'
+          templateUrl: '/modules/default/templates/footer.html'
         },
         'jumbotron@root' : {
-          templateUrl: '/modules/layout/default/templates/jumbotron.html'
+          templateUrl: '/modules/default/templates/jumbotron.html'
         }
       }
     });

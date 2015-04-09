@@ -43,36 +43,23 @@
         views: {
           'content': {
             controller: 'WebhookCtrl as content',
-            controllerAs: 'content',
-            template: '<pre>{{ content.pageData | json }}</pre>'
+            templateUrl: '/modules/pg/templates/content.html'
           },
           'jumbotron': {
             controller: 'WebhookCtrl as content',
-            template: '<h1>Header: {{ content.pageData.featured_image}}</h1>'
+            templateUrl: '/modules/pg/templates/jumbotron.html'
           },
           'header': {
-            template: '{{header.widgetData.header | json}}',
-            controller: function(widgetData) {
-              var self=this;
-              self.widgetData = widgetData;
-            },
-            controllerAs: 'header'
+            templateUrl: '/modules/pg/templates/header.html',
+            controller: 'HeaderCtrl as header'
           },
           'footer': {
-            template: '{{footer.widgetData.footer | json}}',
-            controller: function(widgetData) {
-              var self=this;
-              self.widgetData = widgetData;
-            },
-            controllerAs: 'footer'
+            templateUrl: '/modules/pg/templates/footer.html',
+            controller: 'FooterCtrl as footer'
           },
           'sidebar': {
-            template: '{{sidebar.menuData | json }}',
-            controller: function(menuData) {
-              var self=this;
-              self.menuData = menuData;
-            },
-            controllerAs: 'sidebar'
+            templateUrl: '/modules/pg/templates/sidebar.html',
+            controller: 'SidebarCtrl as sidebar'
           }
         },
         resolve: {

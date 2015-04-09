@@ -12,9 +12,9 @@
   var module = 'app';
 
   angular.module(module, [
-    'app.layout',   // app.default contains the main default for the site.
+    'app.defaults', // app.default contains the default layout for the site.
                     // Override as necessary in your project.
-
+    'app.pg',
                     // <-- Other project requirements here
 
     'app.webhook'   // app.webhook should always be last since it
