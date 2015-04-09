@@ -28,22 +28,22 @@
       abstract: true,
       views: {
         '' : {
-          templateUrl: '/modules/default/templates/layout.html'
+          templateUrl: '/modules/defaults/templates/layout.html'
         },
         'content@root': {
           template: '<h1>This is the content</h1>'
         },
         'sidebar@root': {
-          templateUrl: '/modules/default/templates/sidebar.html'
+          templateUrl: '/modules/defaults/templates/sidebar.html'
         },
         'header@root': {
-          templateUrl: '/modules/default/templates/header.html'
+          templateUrl: '/modules/defaults/templates/header.html'
         },
         'footer@root': {
-          templateUrl: '/modules/default/templates/footer.html'
+          templateUrl: '/modules/defaults/templates/footer.html'
         },
         'jumbotron@root' : {
-          templateUrl: '/modules/default/templates/jumbotron.html'
+          templateUrl: '/modules/defaults/templates/jumbotron.html'
         }
       }
     });
