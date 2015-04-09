@@ -5,7 +5,7 @@
   var module = 'app.pg';
 
   angular.module(module, [
-    'ui.router', 'ngAside'
+    'ui.router'
   ]);
 
   angular.module(module).config(stateConfig);
@@ -31,11 +31,12 @@
 
   // Controllers
   //
-  HeaderCtrl.$inject = [ 'widgetData', '$log'];
-  function HeaderCtrl(widgetData, $log) {
+  HeaderCtrl.$inject = [ 'widgetData','menuData', 'TestFactory', '$log'];
+  function HeaderCtrl(widgetData, menuData, $log) {
     $log.debug("HeaderCtrl Loaded.");
     var self=this;
     self.widgetData = widgetData;
+    self.menuData = menuData;
   }
 
   FooterCtrl.$inject = [ 'widgetData', '$log'];

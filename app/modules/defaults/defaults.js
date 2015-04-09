@@ -6,12 +6,13 @@
 
   angular.module(module, [
     'ui.router',
-    'cn.offCanvas'
+    'cn.offCanvas' // https://github.com/cironunes/angular-off-canvas
   ]);
 
   angular.module(module).config(stateConfig);
   angular.module(module).run(appRun);
   angular.module(module).factory('OCFactory', OCFactory);
+
 
 
   ////////////////////
@@ -53,6 +54,7 @@
 
   OCFactory.$inject = [ 'cnOffCanvas', '$log'];
   function OCFactory(cnOffCanvas, $log) {
+    $log.debug("OCFactory loaded");
     return cnOffCanvas({
       templateUrl: 'modules/defaults/templates/off-canvas.html'
     });

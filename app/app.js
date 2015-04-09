@@ -23,7 +23,6 @@
   angular.module('app').config(appConfig);
   angular.module('app').controller('AppController',AppController);
 
-
   // Code
 
   appConfig.$inject = [ '$locationProvider', '$urlRouterProvider' ];
