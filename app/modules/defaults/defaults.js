@@ -52,12 +52,12 @@
     });
   }
 
-  OCFactory.$inject = [ 'cnOffCanvas', '$log'];
-  function OCFactory(cnOffCanvas, $log) {
-    $log.debug("OCFactory loaded");
-    return cnOffCanvas({
-      templateUrl: 'modules/defaults/templates/off-canvas.html'
-    });
-  }
+  //OCFactory.$inject = [ 'cnOffCanvas', '$log'];
+  //function OCFactory(cnOffCanvas, $log) {
+  //  $log.debug("OCFactory loaded");
+  //  return cnOffCanvas({
+  //    templateUrl: 'modules/defaults/templates/off-canvas.html'
+  //  });
+  //}
 
 })();
