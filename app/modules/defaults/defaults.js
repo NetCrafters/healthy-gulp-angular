@@ -5,11 +5,13 @@
   var module = 'app.defaults';
 
   angular.module(module, [
-    'ui.router'
+    'ui.router',
+    'cn.offCanvas'
   ]);
 
   angular.module(module).config(stateConfig);
   angular.module(module).run(appRun);
+  angular.module(module).factory('OCFactory', OCFactory);
 
 
   ////////////////////
@@ -46,6 +48,13 @@
           templateUrl: '/modules/defaults/templates/jumbotron.html'
         }
       }
+    });
+  }
+
+  OCFactory.$inject = [ 'cnOffCanvas', '$log'];
+  function OCFactory(cnOffCanvas, $log) {
+    return cnOffCanvas({
+      templateUrl: 'modules/defaults/templates/off-canvas.html'
     });
   }
 
